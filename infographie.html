@@ -47,13 +47,15 @@
     .tl-item { position:relative; margin-bottom:1.25rem; }
     .tl-dot { position:absolute; left:-1.2rem; top:0.2rem; width:8px; height:8px; border-radius:50%; background:var(--or); border:2px solid #070713; }
   </style>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded",()=>lucide.createIcons());</script>
 </head>
 <body>
   <canvas id="starfield"></canvas>
   <div class="page-wrapper">
 
     <nav>
-      <div class="nav-logo">★ <span>Strasbourg</span> sous les lumières</div>
+      <div class="nav-logo"><i data-lucide="star" style="display:inline-block;vertical-align:middle;width:1rem;height:1rem;stroke:var(--or);fill:var(--or);margin-right:0.2rem;"></i> <span>Strasbourg</span> sous les lumières</div>
       <ul class="nav-links">
         <li><a href="index.html">Accueil</a></li>
         <li><a href="carte.html">Carte</a></li>
@@ -83,7 +85,7 @@
         <div class="info-grille">
 
           <div class="info-bloc reveal">
-            <h3>📋 Chronologie des politiques locales</h3>
+            <h3><i data-lucide="clipboard-list" style="display:inline-block;vertical-align:middle;margin-right:0.4rem;width:1.1em;height:1.1em;"></i>Chronologie des politiques locales</h3>
             <div class="timeline-pcaet">
               <div class="tl-item">
                 <div class="tl-dot"></div>
@@ -131,37 +133,37 @@
           </div>
 
           <div class="info-bloc reveal">
-            <h3>🏛️ Acteurs locaux de la nuit</h3>
+            <h3><i data-lucide="landmark" style="display:inline-block;vertical-align:middle;margin-right:0.4rem;width:1.1em;height:1.1em;"></i>Acteurs locaux de la nuit</h3>
             <div class="acteur-item">
-              <div class="acteur-icone">🏙️</div>
+              <div class="acteur-icone"><i data-lucide="building-2" style="display:inline-block;width:1.4rem;height:1.4rem;"></i></div>
               <div>
                 <div class="acteur-nom">Eurométropole de Strasbourg</div>
                 <div class="acteur-desc">Compétence éclairage public sur 33 communes. Pilote le PCAET et coordonne la transition LED des communes membres.</div>
               </div>
             </div>
             <div class="acteur-item">
-              <div class="acteur-icone">🔭</div>
+              <div class="acteur-icone"><i data-lucide="telescope" style="display:inline-block;width:1.4rem;height:1.4rem;"></i></div>
               <div>
                 <div class="acteur-nom">Planète Sciences Alsace</div>
                 <div class="acteur-desc">Association organisant des animations de sensibilisation à la pollution lumineuse et des soirées d'observation dans l'Eurométropole.</div>
               </div>
             </div>
             <div class="acteur-item">
-              <div class="acteur-icone">🌿</div>
+              <div class="acteur-icone"><i data-lucide="leaf" style="display:inline-block;width:1.4rem;height:1.4rem;"></i></div>
               <div>
                 <div class="acteur-nom">LPO Alsace</div>
                 <div class="acteur-desc">Ligue de Protection des Oiseaux. Documente les impacts sur les espèces nocturnes du corridor rhénan, notamment les chauves-souris et la cigogne blanche.</div>
               </div>
             </div>
             <div class="acteur-item">
-              <div class="acteur-icone">📡</div>
+              <div class="acteur-icone"><i data-lucide="radio-tower" style="display:inline-block;width:1.4rem;height:1.4rem;"></i></div>
               <div>
                 <div class="acteur-nom">ANPCEN</div>
                 <div class="acteur-desc">Association Nationale pour la Protection du Ciel Nocturne. Labellise les communes alsaciennes engagées dans des politiques d'extinction nocturne.</div>
               </div>
             </div>
             <div class="acteur-item">
-              <div class="acteur-icone">🌍</div>
+              <div class="acteur-icone"><i data-lucide="globe-2" style="display:inline-block;width:1.4rem;height:1.4rem;"></i></div>
               <div>
                 <div class="acteur-nom">Réserve de Biosphère Transfrontalière</div>
                 <div class="acteur-desc">Créée en 2021, couvre une partie de l'Eurométropole. Premier cadre institutionnel franco-allemand intégrant la pollution lumineuse.</div>
@@ -169,7 +171,7 @@
             </div>
 
             <div class="saviez-vous" style="margin-top:1.25rem;">
-              <span class="sy-label">★ Le saviez-vous ?</span>
+              <span class="sy-label"><i data-lucide="star" style="display:inline-block;vertical-align:middle;width:0.85rem;height:0.85rem;fill:var(--or);stroke:var(--or);margin-right:0.25rem;"></i>Le saviez-vous ?</span>
               <p>La cigogne blanche, emblème de l'Alsace, est une espèce partiellement nocturne lors de ses migrations. Des études de la LPO Alsace montrent que les halos lumineux de Strasbourg perturbent les vols migratoires nocturnes au-dessus du couloir rhénan.</p>
             </div>
           </div>
@@ -177,7 +179,7 @@
 
         <!-- Corridor rhénan -->
         <div class="corridor-bloc reveal">
-          <h3>🌿 Impacts sur le corridor écologique rhénan</h3>
+          <h3><i data-lucide="leaf" style="display:inline-block;vertical-align:middle;margin-right:0.4rem;width:1.1em;height:1.1em;"></i>Impacts sur le corridor écologique rhénan</h3>
           <p style="font-size:0.92rem;color:var(--gris-texte);margin-bottom:1.25rem;text-align:justify;">
             La Forêt du Rhin, les zones humides du Ried et les berges du fleuve forment un corridor écologique d'importance européenne, directement adjacent aux communes les plus lumineuses de l'Eurométropole. Entre 2012 et 2022, la radiance à la lisière de la Forêt du Rhin a progressé de ~13 à ~16 nW/cm²/sr — soit une hausse de +23 %, comparable à celle des communes périurbaines voisines. Cette progression, même à ces niveaux modérés, érode la qualité du milieu pour les espèces nocturnes.
           </p>
@@ -185,21 +187,21 @@
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-bottom:1.75rem;">
             <div>
               <div class="corridor-espece">
-                <span class="icone">🦇</span>
+                <span class="icone"><i data-lucide="bat" style="width:1.2rem;height:1.2rem;stroke:var(--vert-reserve);"></i></span>
                 <div class="texte">
                   <strong>Chauves-souris (7 espèces)</strong><br>
                   Les chiroptères naviguent par écholocation, mais leur comportement de chasse est profondément modifié par la lumière artificielle. Les espèces <em>light-averse</em> comme le Grand Rhinolophe (<em>Rhinolophus ferrumequinum</em>) désertent les zones éclairées et abandonnent les routes de vol habituelles dès que l'intensité lumineuse dépasse ~5 lux au sol (Stone et al., 2009). Les espèces <em>light-tolerant</em> comme la Pipistrelle commune se concentrent au contraire autour des lampadaires où les insectes sont attirés — créant une compétition artificielle qui affecte l'ensemble de la guilde. Des données de terrain collectées par la LPO Alsace (communication interne, 2015–2022) signalent un recul des terrains de chasse du Grand Rhinolophe dans plusieurs communes riveraines de l'Eurométropole depuis le renforcement de l'éclairage des berges de l'Ill.
                 </div>
               </div>
               <div class="corridor-espece" style="margin-top:0.75rem;">
-                <span class="icone">🦉</span>
+                <span class="icone"><i data-lucide="bird" style="width:1.2rem;height:1.2rem;stroke:var(--vert-reserve);"></i></span>
                 <div class="texte">
                   <strong>Rapaces nocturnes</strong><br>
                   L'Effraie des clochers (<em>Tyto alba</em>) chasse à vue dans des conditions de très faible luminosité. L'augmentation du halo lumineux en périphérie de l'Eurométropole réduit ses zones de chasse efficaces : une luminance de fond trop élevée masque les petits mammifères au sol. La Chevêche d'Athéna, sédentaire et territoriale, est également pénalisée par l'éclairage des voies agricoles dans les communes périphériques comme Eschau ou Plobsheim, où sa présence a diminué (Gaston et al., 2013).
                 </div>
               </div>
               <div class="corridor-espece" style="margin-top:0.75rem;">
-                <span class="icone">🐸</span>
+                <span class="icone"><i data-lucide="footprints" style="width:1.2rem;height:1.2rem;stroke:var(--vert-reserve);"></i></span>
                 <div class="texte">
                   <strong>Amphibiens</strong><br>
                   La reproduction des anoures (grenouilles, crapauds) est régulée par la photopériode : le déclenchement de la migration vers les mares est perturbé par l'éclairage artificiel, qui avance ou retarde le signal saisonnier. Sur les berges aménagées de l'Ill entre Illkirch et Ostwald, où la radiance atteint ~37 nW/cm²/sr, les concentrations de tritons et de grenouilles rousses ont sensiblement diminué depuis l'éclairage des promenades riveraines (Longcore & Rich, 2004).
@@ -208,28 +210,28 @@
             </div>
             <div>
               <div class="corridor-espece">
-                <span class="icone">🦢</span>
+                <span class="icone"><i data-lucide="feather" style="width:1.2rem;height:1.2rem;stroke:var(--vert-reserve);"></i></span>
                 <div class="texte">
                   <strong>Cigogne blanche — espèce emblématique alsacienne</strong><br>
                   L'Alsace abrite la première population nicheuse française de cigogne blanche (<em>Ciconia ciconia</em>), avec environ 800 couples dont plusieurs dizaines dans l'Eurométropole. Migrateur longue distance, cet oiseau effectue une partie de ses déplacements de nuit, notamment lors des passages prénuptiaux sur le couloir rhénan. Les halos lumineux de l'agglomération brouillent les repères navigationnels astronomiques utilisés lors de la migration nocturne. De plus, l'éclairage des zones de prairie et des milieux humides périurbains — terrains de chasse habituels — réduit la disponibilité perçue des proies nocturnes (vers, batraciens, petits mammifères). La LPO Alsace signale des comportements de désorientation sur les sites de dortoir proches des zones industrielles éclairées.
                 </div>
               </div>
               <div class="corridor-espece" style="margin-top:0.75rem;">
-                <span class="icone">🦋</span>
+                <span class="icone"><i data-lucide="bug" style="width:1.2rem;height:1.2rem;stroke:var(--vert-reserve);"></i></span>
                 <div class="texte">
                   <strong>Insectes nocturnes</strong><br>
                   Le phénomène d'attraction létale vers les sources lumineuses — décrit dès les années 1990 — concerne principalement les coléoptères et lépidoptères nocturnes. Les ponts sur le Rhin et l'Ill, fortement éclairés, constituent des pièges permanents pour les insectes aquatiques émergents. Des études de terrain en Europe montrent que les lampadaires en bordure de milieux naturels peuvent réduire l'abondance des papillons nocturnes de 33 à 47 % dans les habitats adjacents, avec des effets en cascade sur les chaînes trophiques (Boyes et al., 2021). La pollinisation nocturne est réduite de 62 % sur les sites éclairés, affectant directement la reproduction des espèces végétales riveraines (Knop et al., 2017).
                 </div>
               </div>
               <div class="corridor-espece" style="margin-top:0.75rem;">
-                <span class="icone">🐟</span>
+                <span class="icone"><i data-lucide="fish" style="width:1.2rem;height:1.2rem;stroke:var(--vert-reserve);"></i></span>
                 <div class="texte">
                   <strong>Poissons migrateurs — l'anguille européenne</strong><br>
                   L'anguille européenne (<em>Anguilla anguilla</em>, espèce classée CR sur la liste rouge UICN) effectue ses migrations dévalaisons de nuit, en évitant activement la lumière. L'éclairage des berges de l'Ill dans la traversée de l'agglomération crée des barrières comportementales qui fragmentent les couloirs de migration. Ce phénomène, étudié dans le cadre du plan de gestion anguille du bassin Rhin-Meuse, est reconnu comme l'une des causes de la dégradation des populations locales.
                 </div>
               </div>
               <div class="corridor-espece" style="margin-top:0.75rem;">
-                <span class="icone">🌱</span>
+                <span class="icone"><i data-lucide="sprout" style="width:1.2rem;height:1.2rem;stroke:var(--vert-reserve);"></i></span>
                 <div class="texte">
                   <strong>Phénologie végétale</strong><br>
                   Les espèces ligneuses riveraines (saules, peupliers) perçoivent la durée du jour via des photorécepteurs foliaires. Une exposition nocturne prolongée à une radiance supérieure à ~5–10 nW/cm²/sr peut retarder la sénescence automnale de plusieurs semaines, rendant les arbres plus vulnérables aux gelées précoces. Les ripisylves de l'Ill dans les communes périurbaines sont particulièrement exposées à ce phénomène (Longcore & Rich, 2004).
@@ -269,7 +271,7 @@
         <!-- Types d'éclairage + Recommandations -->
         <div class="info-grille">
           <div class="info-bloc reveal">
-            <h3>💡 Types d'éclairage dans l'Eurométropole</h3>
+            <h3><i data-lucide="lightbulb" style="display:inline-block;vertical-align:middle;margin-right:0.4rem;width:1.1em;height:1.1em;"></i>Types d'éclairage dans l'Eurométropole</h3>
             <div class="type-eclairage-grid">
               <div class="type-item">
                 <div class="type-nom">LED blanc froid</div>
@@ -299,7 +301,7 @@
           </div>
 
           <div class="info-bloc reveal">
-            <h3>✅ Recommandations pour l'Eurométropole</h3>
+            <h3><i data-lucide="check-circle-2" style="display:inline-block;vertical-align:middle;margin-right:0.4rem;width:1.1em;height:1.1em;"></i>Recommandations pour l'Eurométropole</h3>
             <p style="font-size:0.88rem;color:var(--gris-texte);margin-bottom:1.25rem;font-style:italic;">Leviers identifiés pour une réduction effective de la radiance nocturne :</p>
             <div style="display:flex;flex-direction:column;gap:0.85rem;">
               <div style="display:flex;gap:0.75rem;align-items:flex-start;">
@@ -344,7 +346,7 @@
         <!-- SVG halo -->
         <!-- Santé humaine -->
         <div class="info-bloc reveal" style="margin-bottom:2rem;border-color:rgba(167,139,250,0.25);background:rgba(13,13,43,0.8);">
-          <h3 style="color:#a78bfa;">🫀 Impacts sur la santé humaine</h3>
+          <h3 style="color:#a78bfa;"><i data-lucide="heart-pulse" style="display:inline-block;vertical-align:middle;margin-right:0.4rem;width:1.1em;height:1.1em;"></i>Impacts sur la santé humaine</h3>
           <p style="font-size:0.9rem;color:var(--gris-texte);margin-bottom:1.25rem;text-align:justify;">
             La pollution lumineuse ne concerne pas seulement la faune nocturne. Pour les 500 000 habitants
             de l'Eurométropole, l'exposition chronique à la lumière artificielle nocturne — même à travers
@@ -365,14 +367,14 @@
             </div>
           </div>
           <div class="saviez-vous" style="margin-top:0;background:rgba(167,139,250,0.07);border-color:rgba(167,139,250,0.2);">
-            <span class="sy-label" style="color:#a78bfa;">★ LED blanc froid vs LED ambre</span>
+            <span class="sy-label" style="color:#a78bfa;"><i data-lucide="star" style="display:inline-block;vertical-align:middle;width:0.85rem;height:0.85rem;fill:var(--or);stroke:var(--or);margin-right:0.25rem;"></i>LED blanc froid vs LED ambre</span>
             <p>Un lampadaire LED blanc froid (6500 K) est <strong>~5 fois plus perturbateur</strong> pour le rythme circadien humain qu'un équivalent amber (2200 K) à intensité lumineuse identique, en raison de sa richesse en longueurs d'onde bleues. Le choix de la température de couleur est donc un enjeu de santé publique autant qu'écologique. L'arrêté de 2018 plafonne la température à 3000 K pour les installations nouvelles, mais n'impose pas de remplacement des installations existantes.</p>
           </div>
         </div>
 
         <!-- Gradient Vosges–Strasbourg–Rhin -->
         <div class="info-bloc reveal" style="margin-bottom:2rem;border-color:rgba(103,232,249,0.2);">
-          <h3>🏔️ Le gradient lumineux Vosges–Strasbourg–Forêt Noire</h3>
+          <h3><i data-lucide="mountain-snow" style="display:inline-block;vertical-align:middle;margin-right:0.4rem;width:1.1em;height:1.1em;"></i>Le gradient lumineux Vosges–Strasbourg–Forêt Noire</h3>
           <p style="font-size:0.9rem;color:var(--gris-texte);margin-bottom:1.25rem;text-align:justify;">
             Strasbourg occupe le fond de la plaine rhénane, encadrée à l'ouest par le Massif Vosgien et à l'est par la Forêt Noire (Schwarzwald). Ce contexte géographique donne naissance à l'un des gradients de radiance les plus frappants d'Europe occidentale, sur une distance de seulement 80 km.
           </p>
@@ -400,7 +402,7 @@
 
         <!-- Comparaison franco-allemande -->
         <div class="info-bloc reveal" style="margin-bottom:2rem;border-color:rgba(103,232,249,0.18);">
-          <h3>🇫🇷🇩🇪 Perspective transfrontalière : Strasbourg et Kehl</h3>
+          <h3><i data-lucide="arrow-left-right" style="display:inline-block;vertical-align:middle;margin-right:0.4rem;width:1.1em;height:1.1em;"></i>Perspective transfrontalière : Strasbourg et Kehl</h3>
           <p style="font-size:0.9rem;color:var(--gris-texte);margin-bottom:1.25rem;text-align:justify;">
             Strasbourg est l'une des rares agglomérations françaises dont la commune-centre est directement mitoyenne d'une commune étrangère. Kehl (38 000 habitants, Bade-Wurtemberg) est séparée de Strasbourg par le Rhin et le pont de l'Europe — 3 km à vol d'oiseau. Cette proximité autorise une comparaison de politique d'éclairage dans des contextes urbains analogues.
           </p>
@@ -417,14 +419,14 @@
             </div>
           </div>
           <div class="saviez-vous" style="margin-top:0;">
-            <span class="sy-label">★ Limites méthodologiques de cette comparaison</span>
+            <span class="sy-label"><i data-lucide="star" style="display:inline-block;vertical-align:middle;width:0.85rem;height:0.85rem;fill:var(--or);stroke:var(--or);margin-right:0.25rem;"></i>Limites méthodologiques de cette comparaison</span>
             <p>Les valeurs pour Kehl sont des estimations issues du même modèle VIIRS, non vérifiées par des mesures de terrain comparatives. L'écart de taux de croissance (+21 % vs +17 %) est suggestif mais ne peut être directement attribué aux seules politiques d'éclairage, car Kehl a également connu une trajectoire de développement urbain différente de Strasbourg sur la période. Une étude comparative rigoureuse nécessiterait des mesures SQM synchronisées sur les deux rives. La Réserve de Biosphère Transfrontalière Alsace offre le cadre institutionnel idéal pour un tel projet.</p>
           </div>
         </div>
 
         <!-- Que faire ? -->
         <div class="info-bloc reveal" style="margin-bottom:2rem;border-color:rgba(74,222,128,0.25);background:linear-gradient(135deg,rgba(74,222,128,0.05),rgba(13,13,43,0.8));">
-          <h3 style="color:var(--vert-reserve);">✅ Que peut-on faire ? — Leviers d'action</h3>
+          <h3 style="color:var(--vert-reserve);"><i data-lucide="check-circle-2" style="display:inline-block;vertical-align:middle;margin-right:0.4rem;width:1.1em;height:1.1em;"></i>Que peut-on faire ? — Leviers d'action</h3>
           <p style="font-size:0.9rem;color:var(--gris-texte);margin-bottom:1.5rem;">
             La pollution lumineuse est l'une des rares formes de pollution <strong>entièrement réversible</strong> : éteindre une lampe produit un effet immédiat. Voici les leviers disponibles, du plus simple au plus structurel.
           </p>
@@ -478,7 +480,7 @@
         </div>
 
         <div class="info-bloc reveal" style="margin-bottom:2rem;">
-          <h3>🌆 Le halo de Strasbourg et ses communes — coupe schématique</h3>
+          <h3><i data-lucide="sunset" style="display:inline-block;vertical-align:middle;margin-right:0.4rem;width:1.1em;height:1.1em;"></i>Le halo de Strasbourg et ses communes — coupe schématique</h3>
           <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:220px;">
             <rect width="900" height="220" fill="transparent"/>
             <!-- Sol -->

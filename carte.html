@@ -33,13 +33,15 @@
     .chart-intro { max-width: 100% !important; }
     .section p, .page-header p { max-width: 100% !important; text-align: justify; }
   </style>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded",()=>lucide.createIcons());</script>
 </head>
 <body>
   <canvas id="starfield"></canvas>
   <div class="page-wrapper">
 
     <nav>
-      <div class="nav-logo">★ <span>Strasbourg</span> sous les lumières</div>
+      <div class="nav-logo"><i data-lucide="star" style="display:inline-block;vertical-align:middle;width:1rem;height:1rem;stroke:var(--or);fill:var(--or);margin-right:0.2rem;"></i> <span>Strasbourg</span> sous les lumières</div>
       <ul class="nav-links">
         <li><a href="index.html">Accueil</a></li>
         <li><a href="carte.html" class="active">Carte</a></li>
@@ -164,7 +166,7 @@
         </p>
 
         <div class="saviez-vous">
-          <span class="sy-label">★ Le saviez-vous ?</span>
+          <span class="sy-label"><i data-lucide="star" style="display:inline-block;vertical-align:middle;width:0.85rem;height:0.85rem;fill:var(--or);stroke:var(--or);margin-right:0.25rem;"></i>Le saviez-vous ?</span>
           <p>Le fond satellitaire utilise le produit <em>VNP46A4</em> de la NASA Black Marble, composite annuel acquis par le capteur VIIRS du satellite Suomi NPP à une résolution de 500 mètres. Cette résolution permet de distinguer les communes les unes des autres à l'échelle de l'Eurométropole, mais pas de différencier les quartiers à l'intérieur d'une même commune.</p>
         </div>
 

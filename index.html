@@ -137,6 +137,8 @@
     .ctx-legende .autres::before { color:rgba(245,200,66,0.5); }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded",()=>lucide.createIcons());</script>
 </head>
 <body>
 
@@ -144,7 +146,7 @@
   <div class="page-wrapper">
 
     <nav>
-      <div class="nav-logo">★ <span>Strasbourg</span> sous les lumières</div>
+      <div class="nav-logo"><i data-lucide="star" style="display:inline-block;vertical-align:middle;width:1rem;height:1rem;stroke:var(--or);fill:var(--or);margin-right:0.2rem;"></i> <span>Strasbourg</span> sous les lumières</div>
       <ul class="nav-links">
         <li><a href="index.html" class="active">Accueil</a></li>
         <li><a href="carte.html">Carte</a></li>
@@ -318,7 +320,7 @@
       </p>
 
       <div class="saviez-vous">
-        <span class="sy-label">★ Particularité strasbourgeoise</span>
+        <span class="sy-label"><i data-lucide="star" style="display:inline-block;vertical-align:middle;width:0.85rem;height:0.85rem;fill:var(--or);stroke:var(--or);margin-right:0.25rem;"></i>Particularité strasbourgeoise</span>
         <p>Strasbourg est l'une des rares villes françaises à avoir publié un <em>Schéma Directeur d'Aménagement Lumière (SDAL)</em>, document de planification qui fixe des objectifs de qualité lumineuse par quartier. Pourtant, entre 2012 et 2022, la radiance nocturne de la commune-centre a progressé de +21 %, une hausse inférieure à la moyenne de l'Eurométropole (+25 %) mais significative.</p>
       </div>
 
@@ -342,7 +344,7 @@
 
         <a href="carte.html" style="text-decoration:none;">
           <div class="card reveal">
-            <span class="card-icone">🗺️</span>
+            <span class="card-icone"><i data-lucide="map" style="display:block;width:2rem;height:2rem;margin:0 auto 0.75rem;stroke:var(--or);"></i></span>
             <p class="card-titre">Géovisualisation</p>
             <p class="card-desc">
               Les 33 communes de l'Eurométropole cartographiées selon leur niveau de
@@ -355,7 +357,7 @@
 
         <a href="dataviz.html" style="text-decoration:none;">
           <div class="card reveal">
-            <span class="card-icone">📊</span>
+            <span class="card-icone"><i data-lucide="bar-chart-2" style="display:block;width:2rem;height:2rem;margin:0 auto 0.75rem;stroke:var(--or);"></i></span>
             <p class="card-titre">Évolution temporelle</p>
             <p class="card-desc">
               Trajectoires de chaque commune entre 2012 et 2022. Quelles communes
@@ -367,7 +369,7 @@
 
         <a href="infographie.html" style="text-decoration:none;">
           <div class="card reveal">
-            <span class="card-icone">🌌</span>
+            <span class="card-icone"><i data-lucide="moon-star" style="display:block;width:2rem;height:2rem;margin:0 auto 0.75rem;stroke:var(--or);"></i></span>
             <p class="card-titre">Infographie</p>
             <p class="card-desc">
               Politiques locales, acteurs alsaciens, impacts sur le corridor rhénan,
@@ -379,7 +381,7 @@
 
         <a href="sources.html" style="text-decoration:none;">
           <div class="card reveal">
-            <span class="card-icone">📚</span>
+            <span class="card-icone"><i data-lucide="book-open" style="display:block;width:2rem;height:2rem;margin:0 auto 0.75rem;stroke:var(--or);"></i></span>
             <p class="card-titre">Sources & méthode</p>
             <p class="card-desc">
               Données satellitaires NASA, références scientifiques, sources
