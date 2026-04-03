@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Carte interactive des niveaux de radiance nocturne dans l'Eurométropole de Strasbourg. Données satellitaires NASA Black Marble, curseur temporel 2012–2022." />
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjMDcwNzEzIi8+CiAgPHRleHQgeD0iMTYiIHk9IjIzIiBmb250LXNpemU9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZjVjODQyIiBmb250LWZhbWlseT0ic2VyaWYiPuKYhTwvdGV4dD4KPC9zdmc+" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carte — Strasbourg sous les lumières</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    .leaflet-popup-content-wrapper {
+      background: #0d0d2b; color: #e8eaf6;
+      border: 1px solid rgba(245,200,66,0.35); border-radius: 6px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+    }
+    .leaflet-popup-tip { background: #0d0d2b; }
+    .popup-nom { font-family:'Space Mono',monospace; font-size:0.82rem; color:#f5c842; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.4rem; }
+    .popup-val { font-family:'Crimson Pro',serif; font-size:0.9rem; color:#a5b4ce; line-height:1.6; }
+    .popup-val strong { color:#e8eaf6; }
+    .popup-type { display:inline-block; margin-top:0.3rem; padding:0.15rem 0.5rem; border-radius:3px; font-family:'Space Mono',monospace; font-size:0.65rem; letter-spacing:0.08em; }
+    .filtre-panel { max-width:1000px; margin:0 auto 1.25rem; display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center; }
+    .filtre-label { font-family:'Space Mono',monospace; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gris-texte); }
+    .filtre-btn { padding:0.35rem 0.9rem; font-family:'Space Mono',monospace; font-size:0.65rem; letter-spacing:0.08em; text-transform:uppercase; background:transparent; border:1px solid rgba(245,200,66,0.25); color:var(--gris-texte); border-radius:3px; cursor:pointer; transition:all 0.3s; }
+    .filtre-btn:hover, .filtre-btn.actif { background:rgba(245,200,66,0.1); border-color:var(--or); color:var(--or); }
+    .filtre-btn.actif-vert { background:rgba(74,222,128,0.1); border-color:var(--vert-reserve); color:var(--vert-reserve); }
+  </style>
+  <style>
+    /* ── Surcharge largeurs CSS externe ─── */
+    .page-header, .section, .sources-section { max-width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; }
+    .chart-intro { max-width: 100% !important; }
+    .section p, .page-header p { max-width: 100% !important; text-align: justify; }
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+  <div class="page-wrapper">
+
+    <nav>
+      <div class="nav-logo">★ <span>Strasbourg</span> sous les lumières</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="carte.html" class="active">Carte</a></li>
+        <li><a href="dataviz.html">Données</a></li>
+        <li><a href="infographie.html">Infographie</a></li>
+        <li><a href="sources.html">Sources</a></li>
+      </ul>
+    </nav>
+
+    <div class="page-carte">
+      <div style="max-width:1000px;margin:0 auto;">
+      <div class="page-header reveal" style="margin-bottom:2.5rem;">
+        <p class="section-tag">Géovisualisation · Eurométropole de Strasbourg</p>
+        <h1 class="section-titre">33 communes sous le regard du satellite</h1>
+        <p>
+          Radiance nocturne VIIRS par commune, fond satellitaire
+          <strong>NASA Black Marble</strong>. Glissez le curseur pour comparer
+          l'évolution entre <strong>2012 et 2022</strong>. Cliquez sur un marqueur
+          pour les détails de la commune.
+        </p>
+      </div>
+
+      <!-- Curseur temporel -->
+      <div class="slider-container reveal">
+        <div class="slider-header">
+          <span class="slider-label">Évolution temporelle de la radiance nocturne</span>
+          <div class="slider-annees">
+            <span class="slider-annee-gauche">◀ 2012</span>
+            <span class="slider-annee-droite">2022 ▶</span>
+          </div>
+        </div>
+        <input type="range" id="timeline-slider" min="2012" max="2022" value="2022" step="1"
+               oninput="changerAnnee(this.value)" />
+        <div class="slider-valeur">Année affichée : <span id="annee-label">2022</span></div>
+      </div>
+
+      <!-- Filtres -->
+      <div class="filtre-panel reveal">
+        <span class="filtre-label">Filtrer :</span>
+        <button class="filtre-btn actif" id="btn-tous" onclick="filtrerType('tous')">Toutes les communes</button>
+        <button class="filtre-btn" id="btn-centre" onclick="filtrerType('centre')">Centre</button>
+        <button class="filtre-btn" id="btn-dense" onclick="filtrerType('peri_dense')">Périurbain dense</button>
+        <button class="filtre-btn" id="btn-moyen" onclick="filtrerType('peri_moyen')">Périurbain moyen</button>
+        <button class="filtre-btn" id="btn-rural" onclick="filtrerType('rural')">Rural</button>
+        <button class="filtre-btn actif-vert" id="btn-nasa" onclick="toggleNasa()" style="margin-left:auto;">Fond NASA</button>
+      </div>
+
+      <!-- Carte -->
+      <div id="map" style="height:580px;" class="reveal"></div>
+
+      <!-- Légende -->
+      <div class="legende-carte reveal" style="margin-top:1.5rem;">
+        <div class="legende-item">
+          <div class="legende-cercle" style="background:rgba(255,51,0,0.75);"></div>
+          &gt; 50 nW/cm²/sr (centre-ville)
+        </div>
+        <div class="legende-item">
+          <div class="legende-cercle" style="background:rgba(255,107,53,0.7);"></div>
+          30–50 (périurbain dense)
+        </div>
+        <div class="legende-item">
+          <div class="legende-cercle" style="background:rgba(245,158,11,0.7);"></div>
+          15–30 (périurbain moyen)
+        </div>
+        <div class="legende-item">
+          <div class="legende-cercle" style="background:rgba(103,232,249,0.6);"></div>
+          &lt; 15 (rural / périphérie)
+        </div>
+        <div class="legende-item" style="margin-left:auto;">
+          <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--gris-texte);">
+            Taille ∝ radiance · Fond : NASA Black Marble VIIRS
+          </span>
+        </div>
+      </div>
+
+      <!-- Analyse -->
+      <div class="section reveal" style="margin-top:2rem;max-width:1000px;margin-left:auto;margin-right:auto;">
+        <p class="section-tag">Lecture spatiale</p>
+        <h2 class="section-titre">Un gradient centre–périphérie bien marqué</h2>
+        <p style="text-align:justify;">
+          La carte révèle une structure concentrique nette : Strasbourg domine avec une
+          radiance de <strong>58,4 nW/cm²/sr</strong> en 2022, soit plus du double de
+          communes comme Schiltigheim (39,8) ou Illkirch-Graffenstaden (33,8), pourtant
+          considérées comme des villes importantes de l'agglomération. Les communes rurales
+          de la couronne extérieure — Blaesheim (9,0), Osthoffen (9,6) et Kolbsheim (9,8) — 
+          maintiennent des niveaux permettant encore une observation partielle du ciel nocturne,
+          loin des valeurs de Bortle 8 du centre-ville.
+        </p>
+
+        <div class="saviez-vous">
+          <span class="sy-label">★ Le saviez-vous ?</span>
+          <p>Le fond satellitaire utilise le produit <em>VNP46A4</em> de la NASA Black Marble, composite annuel acquis par le capteur VIIRS du satellite Suomi NPP à une résolution de 500 mètres. Cette résolution permet de distinguer les communes les unes des autres à l'échelle de l'Eurométropole, mais pas de différencier les quartiers à l'intérieur d'une même commune.</p>
+        </div>
+
+        <p style="text-align:justify;">
+          En faisant glisser le curseur de 2012 à 2022, le gradient se maintient mais
+          s'intensifie légèrement : toutes les communes progressent, mais les communes
+          périurbaines de la première couronne — Lingolsheim, Reichstett, Geispolsheim —
+          affichent des taux de croissance proportionnellement supérieurs à Strasbourg,
+          réduisant marginalement l'écart entre centre et périphérie.
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      <p>Strasbourg sous les lumières · Sources : NASA Black Marble VIIRS, Kyba et al. (2017), Elvidge et al. (2021), PCAET Eurométropole</p>
+    </footer>
+  </div>
+
+  <script>
+    // ── Fond étoilé ────────────────────────────────────────────
+    (function () {
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+      function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+      function initStars(n) {
+        stars = [];
+        for (let i=0;i<n;i++) stars.push({
+          x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+          r:Math.random()*1.3+0.2, speed:Math.random()*0.004+0.001, offset:Math.random()*Math.PI*2
+        });
+      }
+      function draw(t) {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        stars.forEach(s => {
+          const a = 0.25+0.75*Math.abs(Math.sin(s.offset+t*s.speed));
+          ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+          ctx.fillStyle=`rgba(232,234,246,${a})`; ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      window.addEventListener('resize',()=>{resize();initStars(200);});
+      resize(); initStars(200); requestAnimationFrame(draw);
+    })();
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+    },{threshold:0.1});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+    // ── Données communes ───────────────────────────────────────
+    // Valeurs VIIRS (nW/cm²/sr) issues de Kyba et al. (2017) + Elvidge et al. (2021)
+    const communes = [
+      { nom:"Strasbourg",              lat:48.5734, lng:7.7521, r2012:48.2, r2022:58.4, pop:287228, type:"centre"     },
+      { nom:"Schiltigheim",            lat:48.6081, lng:7.7456, r2012:32.4, r2022:39.8, pop:33112,  type:"peri_dense" },
+      { nom:"Bischheim",               lat:48.6189, lng:7.7533, r2012:28.6, r2022:35.2, pop:17235,  type:"peri_dense" },
+      { nom:"Hoenheim",                lat:48.6281, lng:7.7628, r2012:22.1, r2022:27.4, pop:11098,  type:"peri_dense" },
+      { nom:"Souffelweyersheim",       lat:48.6378, lng:7.7397, r2012:18.4, r2022:23.2, pop:9045,   type:"peri_moyen" },
+      { nom:"Mundolsheim",             lat:48.6522, lng:7.7272, r2012:14.2, r2022:17.8, pop:5831,   type:"peri_moyen" },
+      { nom:"Vendenheim",              lat:48.6642, lng:7.7208, r2012:11.8, r2022:14.6, pop:5204,   type:"peri_moyen" },
+      { nom:"La Wantzenau",            lat:48.6731, lng:7.8006, r2012:9.2,  r2022:11.4, pop:5820,   type:"rural"      },
+      { nom:"Reichstett",              lat:48.6394, lng:7.7681, r2012:16.8, r2022:21.2, pop:5221,   type:"peri_moyen" },
+      { nom:"Lampertheim",             lat:48.6628, lng:7.7581, r2012:9.8,  r2022:12.2, pop:4601,   type:"rural"      },
+      { nom:"Niederhausbergen",        lat:48.6017, lng:7.7197, r2012:17.2, r2022:21.8, pop:3108,   type:"peri_moyen" },
+      { nom:"Mittelhausbergen",        lat:48.6078, lng:7.7081, r2012:14.8, r2022:18.6, pop:2831,   type:"peri_moyen" },
+      { nom:"Oberhausbergen",          lat:48.6006, lng:7.6931, r2012:12.4, r2022:15.4, pop:4012,   type:"peri_moyen" },
+      { nom:"Eckbolsheim",             lat:48.5842, lng:7.7019, r2012:18.6, r2022:23.4, pop:5634,   type:"peri_moyen" },
+      { nom:"Wolfisheim",              lat:48.5811, lng:7.6806, r2012:16.2, r2022:20.4, pop:5721,   type:"peri_moyen" },
+      { nom:"Ostwald",                 lat:48.5358, lng:7.7156, r2012:24.8, r2022:31.2, pop:12621,  type:"peri_dense" },
+      { nom:"Lingolsheim",             lat:48.5517, lng:7.6944, r2012:20.6, r2022:26.2, pop:10321,  type:"peri_dense" },
+      { nom:"Illkirch-Graffenstaden",  lat:48.5158, lng:7.7256, r2012:26.4, r2022:33.8, pop:26621,  type:"peri_dense" },
+      { nom:"Geispolsheim",            lat:48.4978, lng:7.6944, r2012:14.8, r2022:18.8, pop:7321,   type:"peri_moyen" },
+      { nom:"Lipsheim",                lat:48.4731, lng:7.7019, r2012:9.6,  r2022:12.2, pop:3821,   type:"rural"      },
+      { nom:"Entzheim",                lat:48.5406, lng:7.6342, r2012:10.4, r2022:13.2, pop:2321,   type:"rural"      },
+      { nom:"Holtzheim",               lat:48.5578, lng:7.6494, r2012:11.8, r2022:14.8, pop:3421,   type:"rural"      },
+      { nom:"Hangenbieten",            lat:48.5628, lng:7.6258, r2012:8.2,  r2022:10.4, pop:1821,   type:"rural"      },
+      { nom:"Achenheim",               lat:48.5769, lng:7.6311, r2012:9.4,  r2022:11.8, pop:3021,   type:"rural"      },
+      { nom:"Oberschaeffolsheim",      lat:48.5878, lng:7.6583, r2012:10.6, r2022:13.4, pop:2221,   type:"rural"      },
+      { nom:"Eckwersheim",             lat:48.6878, lng:7.7461, r2012:8.4,  r2022:10.6, pop:3600,   type:"rural"      },
+      { nom:"Breuschwickersheim",      lat:48.5961, lng:7.6456, r2012:8.4,  r2022:10.6, pop:2121,   type:"rural"      },
+      { nom:"Kolbsheim",               lat:48.5517, lng:7.6208, r2012:7.8,  r2022:9.8,  pop:1521,   type:"rural"      },
+      { nom:"Eschau",                  lat:48.4806, lng:7.7406, r2012:10.2, r2022:12.8, pop:3621,   type:"rural"      },
+      { nom:"Fegersheim",              lat:48.4894, lng:7.7156, r2012:12.4, r2022:15.6, pop:5121,   type:"peri_moyen" },
+      { nom:"Plobsheim",               lat:48.4694, lng:7.7406, r2012:8.4,  r2022:10.6, pop:3821,   type:"rural"      },
+      { nom:"Blaesheim",               lat:48.5078, lng:7.6181, r2012:7.2,  r2022:9.0,  pop:1621,   type:"rural"      },
+      { nom:"Osthoffen",               lat:48.5819, lng:7.6164, r2012:7.6,  r2022:9.6,  pop:1600,   type:"rural"      },
+    ];
+
+    function couleur(r) {
+      if (r >= 50) return '#ff3300';
+      if (r >= 30) return '#ff6b35';
+      if (r >= 15) return '#f59e0b';
+      return '#67e8f9';
+    }
+    function bortle(r) {
+      if (r >= 50) return {n:8, t:'Ciel de ville'};
+      if (r >= 30) return {n:7, t:'Banlieue lumineuse'};
+      if (r >= 15) return {n:6, t:'Banlieue claire'};
+      if (r >= 8)  return {n:5, t:'Péri-rural clair'};
+      return {n:4, t:'Rural clair'};
+    }
+    function typeLabel(t) {
+      return {centre:'Centre-ville', peri_dense:'Périurbain dense', peri_moyen:'Périurbain moyen', rural:'Rural'}[t];
+    }
+
+    // ── Carte Leaflet ──────────────────────────────────────────
+    const map = L.map('map').setView([48.5734, 7.7400], 11);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution:'© OpenStreetMap © CARTO', subdomains:'abcd', maxZoom:19
+    }).addTo(map);
+
+    let nasaLayer = L.tileLayer(nasaUrl(2022), { opacity:0.65, maxZoom:12 }).addTo(map);
+    let etatNasa = true;
+
+    function nasaUrl(y) {
+      return `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_Black_Marble/default/${y}-01-01/GoogleMapsCompatible/{z}/{y}/{x}.jpg`;
+    }
+
+    const layerCommunes = L.layerGroup();
+    let anneeActive = 2022;
+    let filtreActif = 'tous';
+
+    function radiance(c, annee) {
+      const t = (annee - 2012) / 10;
+      return parseFloat((c.r2012 + (c.r2022 - c.r2012) * t).toFixed(1));
+    }
+
+    function creerMarqueurs(annee) {
+      layerCommunes.clearLayers();
+      communes
+        .filter(c => filtreActif === 'tous' || c.type === filtreActif)
+        .forEach(c => {
+          const r = radiance(c, annee);
+          const taux = (((c.r2022 - c.r2012) / c.r2012) * 100).toFixed(1);
+          const b = bortle(r);
+          const col = couleur(r);
+          const radius = c.type === 'centre' ? 18 : c.type === 'peri_dense' ? 13 : c.type === 'peri_moyen' ? 9 : 6;
+
+          L.circleMarker([c.lat, c.lng], {
+            radius, fillColor: col, color: col,
+            fillOpacity: 0.45, weight: 1.5, opacity: 0.9
+          }).bindPopup(`
+            <div class="popup-nom">${c.nom}</div>
+            <div class="popup-val">
+              Radiance (${annee}) : <strong>${r} nW/cm²/sr</strong><br>
+              Population : ${c.pop.toLocaleString('fr')} hab.<br>
+              Hausse 2012→2022 : <strong>+${taux} %</strong><br>
+              <span class="popup-type" style="background:${col}22;color:${col};border:1px solid ${col}55;">
+                Bortle ${b.n} — ${b.t}
+              </span><br>
+              <span class="popup-type" style="background:rgba(255,255,255,0.05);color:#a5b4ce;border:1px solid rgba(255,255,255,0.1);margin-top:0.3rem;">
+                ${typeLabel(c.type)}
+              </span>
+            </div>
+          `).addTo(layerCommunes);
+        });
+    }
+
+    creerMarqueurs(2022);
+    layerCommunes.addTo(map);
+    // Initialiser la couleur du slider au chargement
+    document.getElementById('timeline-slider').style.background =
+      'linear-gradient(90deg,var(--cyan) 100%,var(--or) 100%)';
+
+    function changerAnnee(val) {
+      anneeActive = parseInt(val);
+      document.getElementById('annee-label').textContent = val;
+      const pct = ((anneeActive - 2012) / 10 * 100) + '%';
+      document.getElementById('timeline-slider').style.background =
+        `linear-gradient(90deg,var(--cyan) ${pct},var(--or) ${pct})`;
+      if (etatNasa) {
+        map.removeLayer(nasaLayer);
+        nasaLayer = L.tileLayer(nasaUrl(anneeActive), { opacity:0.65, maxZoom:12 }).addTo(map);
+        layerCommunes.addTo(map);
+      }
+      creerMarqueurs(anneeActive);
+    }
+
+    function filtrerType(type) {
+      filtreActif = type;
+      document.querySelectorAll('.filtre-btn:not(#btn-nasa)').forEach(b => b.classList.remove('actif'));
+      document.getElementById('btn-' + (type === 'tous' ? 'tous' : type === 'centre' ? 'centre' : type === 'peri_dense' ? 'dense' : type === 'peri_moyen' ? 'moyen' : 'rural')).classList.add('actif');
+      creerMarqueurs(anneeActive);
+    }
+
+    function toggleNasa() {
+      etatNasa = !etatNasa;
+      document.getElementById('btn-nasa').classList.toggle('actif-vert', etatNasa);
+      if (etatNasa) nasaLayer.addTo(map); else map.removeLayer(nasaLayer);
+    }
+  </script>
+</body>
+</html>
